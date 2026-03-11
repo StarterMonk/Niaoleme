@@ -278,6 +278,6 @@ MIT License
 
 ## 联系方式
 
-- 项目维护者: hackthon-team
-- 邮箱: hackthon-team@example.com
+- 项目维护者: Jimmy Hao
+- 邮箱: zxcmkmk@gmail.com
 - 问题反馈: [GitHub Issues](https://github.com/your-repo/issues)
