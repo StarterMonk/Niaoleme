@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: niaolemo
+  labels:
+    name: niaolemo
+    app: niaolemo-system

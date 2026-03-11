@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: niaolemo-core-service
+  namespace: niaolemo
+  labels:
+    app: niaolemo-core
+spec:
+  selector:
+    app: niaolemo-core
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: niaolemo
+spec:
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: niaolemo
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+  type: ClusterIP

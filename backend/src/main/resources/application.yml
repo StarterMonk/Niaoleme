@@ -1,0 +1,201 @@
+# 核心配置文件
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  profiles:
+    active: dev
+  
+  application:
+    name: niaolemo-core
+  
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/niaolemo_core_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:niaolemo_user}
+    password: ${DB_PASSWORD:niaolemo_pass}
+    type: com.alibaba.druid.pool.DruidDataSource
+    
+    # Druid连接池配置
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      
+      # 监控配置
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        login-username: admin
+        login-password: ${DRUID_PASSWORD:admin123}
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        use_sql_comments: true
+    open-in-view: false
+
+  # Redis配置
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+
+  # 消息队列配置 (为后续微服务准备)
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: /niaolemo
+
+# MyBatis Plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deletedAt
+      logic-delete-value: now()
+      logic-not-delete-value: 'null'
+  mapper-locations: classpath*:mapper/*.xml
+
+# Redisson配置
+redisson:
+  config: |
+    singleServerConfig:
+      address: "redis://${REDIS_HOST:localhost}:${REDIS_PORT:6379}"
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      connectionMinimumIdleSize: 5
+      connectionPoolSize: 10
+      dnsMonitoringInterval: 5000
+    threads: 4
+    nettyThreads: 8
+
+# MinIO配置
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  bucket-name: ${MINIO_BUCKET:niaolemo-files}
+
+# JWT配置
+jwt:
+  secret: ${JWT_SECRET:niaolemo-jwt-secret-key-2024-chongqing}
+  expiration: 86400000  # 24小时
+  refresh-expiration: 604800000  # 7天
+
+# API文档配置
+knife4j:
+  enable: true
+  openapi:
+    title: 尿了么API文档
+    description: 智能健康检测应用后端API
+    version: 1.0.0
+    concat: niaolemo-team@example.com
+    license: MIT
+    license-url: https://opensource.org/licenses/MIT
+  setting:
+    language: zh_cn
+    enable-swagger-models: true
+    enable-document-manage: true
+    swagger-model-name: 实体类列表
+
+# 监控配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# 应用配置
+app:
+  # AI模型配置
+  ai:
+    model-version: "glm-4.1v-9b"
+    confidence-threshold: 0.8
+    max-processing-time: 30000  # 30秒
+  
+  # 文件存储配置
+  file:
+    max-size: 10485760  # 10MB
+    allowed-types: jpg,jpeg,png,bmp
+    upload-path: /uploads
+  
+  # 安全配置
+  security:
+    password-strength: medium
+    max-login-attempts: 5
+    lockout-duration: 300000  # 5分钟
+  
+  # 业务配置
+  business:
+    max-tests-per-day: 10
+    test-result-retention-days: 365
+    review-moderation-enabled: true
+
+# 日志配置
+logging:
+  level:
+    com.niaolemo: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+  file:
+    name: logs/niaolemo-core.log
+    max-size: 100MB
+    max-history: 30
