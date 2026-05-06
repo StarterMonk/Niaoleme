@@ -229,3 +229,9 @@ test-script.*
 .env.development.local
 .env.test.local
 .env.production.local
+# Large files
+*.zip
+*.apk
+*.ipa
+*.tar.gz
+frontend/android/gradle/wrapper/*.zip
