@@ -281,3 +281,17 @@ MIT License
 - 项目维护者: Jimmy Hao
 - 邮箱: zxcmkmk@gmail.com
 - 问题反馈: [GitHub Issues](https://github.com/your-repo/issues)
+
+---
+
+## 📱 应用下载
+
+### 最新版本：v1.0.0
+
+从 [GitHub Releases](https://github.com/StarterMonk/Niaoleme/releases) 下载最新版本
+
+**支持平台：**
+- 📱 **Android**: APK 直接安装
+- 🍎 **iOS**: 通过 TestFlight 或 App Store
+- 🌐 **Web**: 浏览器版本
+
