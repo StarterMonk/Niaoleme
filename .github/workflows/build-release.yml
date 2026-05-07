@@ -19,6 +19,15 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
       - name: Clear npm cache
         run: npm cache clean --force
 
@@ -26,21 +35,31 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-      - name: Build APK with EAS
+      - name: Build APK
         working-directory: ./frontend
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
-          npm install -g eas-cli
-          eas build --platform android --non-interactive
+          cd android
+          # Initialize Gradle wrapper if it doesn't exist
+          if [ ! -f gradlew ]; then
+            gradle wrapper --gradle-version 8.0
+          fi
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+          # Find and copy the built APK
+          APK_PATH=$(find . -name "*release*.apk" -type f | head -1)
+          if [ -z "$APK_PATH" ]; then
+            echo "APK not found"
+            exit 1
+          fi
+          mkdir -p ../build
+          cp "$APK_PATH" ../build/app-release.apk
+          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
 
       - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          files: ./frontend/build/app-release.apk
           body: |
             Niaoleme v${{ github.ref_name }}
 
@@ -53,3 +72,5 @@ jobs:
             - 💬 实时AI对话
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
