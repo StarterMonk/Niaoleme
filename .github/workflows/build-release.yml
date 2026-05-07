@@ -35,31 +35,18 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-      - name: Build APK
+      - name: Build APK with EAS (Local)
         working-directory: ./frontend
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
-          cd android
-          # Initialize Gradle wrapper if it doesn't exist
-          if [ ! -f gradlew ]; then
-            gradle wrapper --gradle-version 8.0
-          fi
-          chmod +x gradlew
-          ./gradlew assembleRelease
+          npm install -g eas-cli
+          eas build --platform android --local --non-interactive
 
-          # Find and copy the built APK
-          APK_PATH=$(find . -name "*release*.apk" -type f | head -1)
-          if [ -z "$APK_PATH" ]; then
-            echo "APK not found"
-            exit 1
-          fi
-          mkdir -p ../build
-          cp "$APK_PATH" ../build/app-release.apk
-          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
-
-      - name: Create Release
+      - name: Upload APK to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./frontend/build/app-release.apk
+          files: ./frontend/**/*.apk
           body: |
             Niaoleme v${{ github.ref_name }}
 

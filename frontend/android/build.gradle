@@ -18,13 +18,3 @@ buildscript {
         classpath('de.undercouch:gradle-download-task:5.3.0')
     }
 }
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven {
-            url("$rootDir/../node_modules/react-native/android")
-        }
-    }
-}
