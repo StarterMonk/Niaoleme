@@ -19,9 +19,12 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install dependencies
         working-directory: ./frontend
-        run: npm ci
+        run: npm install
 
       - name: Build APK with EAS
         working-directory: ./frontend
