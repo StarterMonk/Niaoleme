@@ -14,17 +14,12 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTabletMode": true,
-      "bundleIdentifier": "com.niaoleme.health",
-      "buildNumber": "1.0.0"
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF5FB"
       },
-      "package": "com.niaoleme.health",
+      "package": "com.jimmyhao.urinehealthapp",
       "versionCode": 1
     },
     "web": {
