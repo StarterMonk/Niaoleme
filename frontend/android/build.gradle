@@ -7,14 +7,24 @@ buildscript {
         compileSdkVersion = 34
         targetSdkVersion = 34
         ndkVersion = "26.1.10909125"
+        frescoVersion = "3.1.0"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.0.0")
-        classpath("com.facebook.react:react-native-gradle-plugin:0.73.6")
-        classpath("de.undercouch:gradle-download-task:5.3.0")
+        classpath('com.android.tools.build:gradle:8.0.0')
+        classpath('de.undercouch:gradle-download-task:5.3.0')
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url("$rootDir/../node_modules/react-native/android")
+        }
     }
 }

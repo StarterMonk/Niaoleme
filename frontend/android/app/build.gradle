@@ -1,5 +1,8 @@
 apply plugin: "com.android.application"
-apply plugin: "com.facebook.react"
+
+if (project.hasProperty('android')) {
+    // This will be added by react-native-gradle-plugin if available
+}
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
