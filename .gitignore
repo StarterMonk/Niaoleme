@@ -234,3 +234,4 @@ test-script.*
 *.ipa
 *.tar.gz
 frontend/android/gradle/wrapper/*.zip
+.expo/
