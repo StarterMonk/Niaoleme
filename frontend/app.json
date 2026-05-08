@@ -26,17 +26,10 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      [
-        "expo-document-picker",
-        {
-          "iCloudContainerEnvironment": "Production"
-        }
-      ]
+      "expo-document-picker"
     ],
     "extra": {
-      "eas": {
-        "projectId": "398052c4-84aa-490b-b5ab-ef55531323b1"
-      }
+      "eas": {}
     },
     "description": "尿了么 - AI驱动的健康管理应用，追踪健康指标、发现附近厕所、获取AI健康建议"
   }
