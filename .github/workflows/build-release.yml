@@ -14,11 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -28,29 +23,20 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
 
-      - name: Clear npm cache
-        run: npm cache clean --force
-
-      - name: Install dependencies
-        working-directory: ./frontend
-        run: npm install
-
-      - name: Build APK with EAS (Local)
-        working-directory: ./frontend
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Build APK with Gradle
+        working-directory: ./frontend/android
         run: |
-          npm install -g eas-cli
-          eas build --platform android --local --non-interactive
+          chmod +x gradlew || gradle wrapper
+          ./gradlew assembleDebug
 
-      - name: Upload APK to Release
+      - name: Find and upload APK
         uses: softprops/action-gh-release@v1
         with:
-          files: ./frontend/**/*.apk
+          files: ./frontend/android/app/build/outputs/apk/**/*.apk
           body: |
             Niaoleme v${{ github.ref_name }}
 
-            APK已构建完成，准备下载！
+            APK已构建完成！
 
             ## 功能特性
             - 🤖 ChatAnywhere AI 健康分析
