@@ -1,16 +1,13 @@
 {
   "expo": {
-    "name": "尿了么 Niaoleme",
+    "name": "Niaoleme",
     "slug": "niaoleme-health-app",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "userInterfaceStyle": "light",
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
-      "package": "com.jimmyhao.urinehealthapp",
-      "versionCode": 1
+      "package": "com.jimmyhao.urinehealthapp"
     },
     "plugins": [
       "expo-document-picker"
@@ -20,7 +17,6 @@
         "projectId": "8ad52d92-887d-4ae1-8c8a-73c5f28147b9"
       }
     },
-    "description": "尿了么 - AI驱动的健康管理应用，追踪健康指标、发现附近厕所、获取AI健康建议",
     "owner": "jimmyhao"
   }
 }
