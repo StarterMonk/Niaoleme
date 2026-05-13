@@ -1,4 +1,4 @@
-name: Build and Release APK
+name: Build and Release
 
 on:
   push:
@@ -14,35 +14,50 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          distribution: 'zulu'
-          java-version: '17'
+          node-version: '18'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm install
 
-      - name: Build APK with Gradle
-        working-directory: ./frontend/android
+      - name: Build bundle with Expo
+        working-directory: ./frontend
         run: |
-          chmod +x gradlew || gradle wrapper
-          ./gradlew assembleDebug
+          npm install -g expo-cli
+          expo export --platform android --output-dir ./build
 
-      - name: Find and upload APK
+      - name: Create release artifacts
+        run: |
+          cd ./frontend/build
+          # Create a compressed bundle package
+          tar -czf ../niaoleme-bundle.tar.gz .
+          ls -lh ../niaoleme-bundle.tar.gz
+
+      - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./frontend/android/app/build/outputs/apk/**/*.apk
+          files: |
+            ./frontend/niaoleme-bundle.tar.gz
+            ./frontend/app.json
           body: |
             Niaoleme v${{ github.ref_name }}
 
-            APK已构建完成！
+            ## 📦 Release Contents
+            - `niaoleme-bundle.tar.gz` - Expo bundle for Android deployment
+            - `app.json` - App configuration
 
-            ## 功能特性
+            ## 🚀 Features
             - 🤖 ChatAnywhere AI 健康分析
             - 🚻 社区厕所库
             - 📊 健康数据追踪
             - 💬 实时AI对话
+
+            ## 📱 Installation
+            Extract the bundle and use `eas submit` or upload to Expo directly.
+
           draft: false
           prerelease: false
         env:
