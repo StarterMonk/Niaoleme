@@ -150,6 +150,9 @@ coverage.xml
 build/
 dist/
 *.tgz
+/caches/
+/runner-diagnostic-logs/
+/build/
 
 # ===== Node.js (前端相关) =====
 node_modules/
