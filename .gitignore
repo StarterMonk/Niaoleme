@@ -239,3 +239,4 @@ test-script.*
 frontend/android/gradle/wrapper/*.zip
 .expo/
 !gradle-wrapper.jar
+.expo/
