@@ -1,102 +1,293 @@
 # 🎉 Niaoleme v1.0.0 发布说明
 
-## 📅 发布日期：2026-05-06
+**发布日期：** 2026-05-16  
+**版本状态：** 🟢 稳定版  
+**APK 大小：** 64.6 MB
 
 ---
 
-## ✨ 核心功能
+## 📋 更新内容
 
-### 🤖 AI 健康分析
-- 集成 ChatAnywhere GPT-3.5-turbo
-- 深度健康分析（基于 30 天数据）
-- 周报告生成和趋势分析
-- 实时 AI 聊天对话
-- 个性化健康建议
+### ✅ 新功能
 
-### 🚻 社区厕所库
-- 用户提交厕所地址
-- 支持按关键词搜索
-- 按省市/区县分类查询
-- 用户评分和评论系统
-- 实时数据同步
+#### 1. 用户认证系统
+- ✔️ 用户注册与登录
+- ✔️ 手机号/邮箱/用户名多种登录方式
+- ✔️ JWT 身份令牌管理
+- ✔️ 密码安全加密存储
+- ✔️ 账户安全锁定保护
 
-### 📊 健康数据管理
-- 尿液颜色记录（5 种颜色分类）
-- 时间和地点追踪
-- 历史记录查看
-- 本地隐私存储
-- 无云端数据上传
+#### 2. 社区厕所库（多人共享）
+- ✔️ 附近厕所搜索（基于地理位置）
+- ✔️ 厕所详情页面
+- ✔️ 用户评价与评论系统
+- ✔️ 厕所经纬度地理编码
+- ✔️ 实时数据同步（所有用户看到最新数据）
+- ✔️ 数据库中央存储（多人共享）
 
-### 🎨 用户界面
-- 粉色可爱主题设计
-- 流畅的用户体验
-- 表情符号友好界面
-- 快速操作按钮
-- 响应式布局
+#### 3. 后端 API 服务
+- ✔️ RESTful API 架构 (`/api/v1/`)
+- ✔️ Spring Boot 框架
+- ✔️ MySQL 持久化存储
+- ✔️ Redis 缓存加速
+- ✔️ 实时健康检查 (`/actuator/health`)
+- ✔️ Swagger/Knife4j API 文档
 
----
+#### 4. 基础健康管理
+- ✔️ 本地隐私存储（无云端上传）
+- ✔️ 检测记录管理
+- ✔️ 简化的位置信息关联
 
-## 🛠️ 技术栈
+### 🔧 技术基础设施
 
 **前端**
-- React Native + Expo
-- React Navigation
-- AsyncStorage（本地存储）
-- Axios（HTTP 请求）
+- React Native 0.74.5
+- Expo SDK 51.0.39
+- React Navigation 路由系统
+- AsyncStorage 本地数据库
+- Axios HTTP 客户端
 
 **后端**
-- Node.js + Express
-- MongoDB（可选）
-- RESTful API
+- Java 17
+- Spring Boot 3.x
+- Spring Security (JWT)
+- MyBatis Plus
+- Druid 连接池
 
-**AI 集成**
-- ChatAnywhere API
-- GPT-3.5-turbo 模型
-- 自然语言处理
+**数据库**
+- MySQL 8.0（主数据库）
+- Redis 7.0（缓存）
+- 支持后续微服务分离
 
-**部署**
-- Expo EAS Build
-- GitHub Actions CI/CD
-- GitHub Releases
-
----
-
-## 📱 安装说明
-
-### Android（推荐）
-
-#### 方式 1: 直接安装
-```bash
-# 从 Release 下载 APK 文件
-adb install niaoleme-v1.0.0.apk
-```
-
-#### 方式 2: 文件管理器
-1. 下载 APK 到手机
-2. 打开文件管理器
-3. 找到 APK 文件点击安装
-
-#### 方式 3: QR 码
-使用 Android 设备扫描 Expo 生成的 QR 码
-
-### iOS（即将推出）
-- TestFlight 测试版
-- App Store 正式版
-
-### Web
-```bash
-访问 https://niaoleme.vercel.app
-（或您部署的 Web 服务器）
-```
+**DevOps**
+- Docker 容器化
+- Docker Compose 编排
+- Kubernetes 部署配置
+- GitHub Actions CI/CD 就绪
+- Prometheus + Grafana 监控
 
 ---
 
-## 🚀 快速开始
+## 📦 安装指南
+
+### Android
+
+#### 推荐方案：直接安装 APK
+```bash
+# 1. 从 GitHub Release 下载 Niaoleme-v1.0.0.apk
+# 2. 在 Android 设备上打开文件管理器，找到 APK
+# 3. 点击安装，授予必要权限
+
+# 或使用 adb 命令行安装
+adb install Niaoleme-v1.0.0.apk
+```
+
+#### 备选方案：本地开发环境编译
+```bash
+# 需要：Node.js, Android SDK, Java 17
+
+git clone https://github.com/StarterMonk/Niaoleme.git
+cd Niaoleme/frontend
+
+npm install
+npm run build:android
+# 或使用 eas-cli
+eas build --platform android
+```
+
+### iOS（规划中）
+- TestFlight 测试版（即将推出）
+- App Store 正式版（计划 v1.1.0）
+
+### 云端部署（后端服务）
+
+**快速启动**
+```bash
+# 1. 在 Linux 服务器上克隆项目
+git clone https://github.com/StarterMonk/Niaoleme.git
+cd Niaoleme
+
+# 2. 启动所有组件（MySQL + Redis + Backend）
+docker compose up -d
+
+# 3. 初始化数据库
+mysql -h localhost -u root -p < database/init.sql
+
+# 4. 访问 API
+# 本地: http://localhost:8080/api/v1
+# 生产: 配置域名 DNS 指向服务器 IP，使用 HTTPS
+```
+
+**更多部署详情**
+- 参考 [DEPLOYMENT.md](docs/DEPLOYMENT.md)
+- Kubernetes 配置: `k8s/`
+- Docker Compose: `docker-compose.yml`
+
+---
+
+## 🔐 多人共享数据说明
+
+### 如何实现"像美团一样共享"？
+
+当您的后端部署到服务器后，所有 APP 用户将自动进行**实时数据同步**：
+
+1. **用户 A 上传厕所点位**
+   ```
+   POST /api/v1/locations/toilets
+   {
+     "name": "朝阳公园卫生间",
+     "latitude": 39.9730,
+     "longitude": 116.5028,
+     "address": "北京市朝阳区..."
+   }
+   ```
+   → 数据写入服务器 MySQL 数据库
+
+2. **用户 B 搜索附近厕所**
+   ```
+   GET /api/v1/locations/toilets/nearby?lat=39.9728&lng=116.5030&radius=1000
+   ```
+   → 立刻返回包括用户 A 上传的最新点位
+
+3. **用户 C 评价厕所**
+   ```
+   POST /api/v1/locations/toilets/{id}/reviews
+   {
+     "rating": 5,
+     "content": "很干净！"
+   }
+   ```
+   → 其他所有用户刷新后即可看到最新评价
+
+### 数据流
+```
+APP（用户输入）
+    ↓ HTTPS
+后端 API (Spring Boot)
+    ↓ SQL
+MySQL 数据库（共享存储）
+    ↓ 
+所有 APP 用户共享可见
+```
+
+---
+
+## 📱 快速开始
 
 ### 1. 首次启动
-- 选择语言（支持中文）
-- 阅读使用说明
-- 授予必要权限
+- 选择登录或注册
+- 授予定位权限（用于附近搜索）
+- 同意隐私政策
+
+### 2. 上传厕所位置
+- 打开应用，进入"社区厕所库"
+- 点击"新增点位"
+- 输入厕所名称和地址
+- 系统自动获取经纬度
+- 确认提交
+
+### 3. 搜索附近厕所
+- 首页显示附近厕所列表
+- 长按地图查看详细信息
+- 查看其他用户的评价与照片
+
+### 4. 参与评价
+- 点击厕所进入详情页
+- 点击"写评价"
+- 选择星级和标签
+- 发送评价
+
+---
+
+## 🐛 已知限制
+
+| 功能 | 状态 | 预计修复 |
+|------|------|---------|
+| iOS 支持 | ❌ 未实现 | v1.1.0 |
+| AI 健康分析 | 🔄 基础框架 | v1.2.0 |
+| 离线模式 | ❌ 未实现 | v1.3.0 |
+| 推送通知 | ❌ 未实现 | v1.2.0 |
+| 社交分享 | 🔄 部分支持 | v1.1.0 |
+| 黑名单用户 | ❌ 未实现 | v1.2.0 |
+
+---
+
+## 🚀 后续版本计划
+
+### v1.1.0（预计 2026-07 发布）
+- [ ] iOS APP 发布
+- [ ] 推送通知系统
+- [ ] 图片上传与展示
+- [ ] 厕所营业时间信息
+- [ ] 用户等级与徽章
+
+### v1.2.0（预计 2026-09 发布）
+- [ ] ChatGPT 健康咨询（可选接入）
+- [ ] 数据导出功能
+- [ ] 深度分析报告
+- [ ] 社群论坛
+- [ ] 黑名单与举报系统
+
+### v1.3.0+（后续规划）
+- [ ] 离线地图与数据同步
+- [ ] 分布式存储优化
+- [ ] 微服务架构升级
+- [ ] 国际化支持
+
+---
+
+## 💾 数据库架构
+
+### 核心表
+- `users` - 用户信息与认证
+- `toilet_locations` - 厕所点位（含经纬度）
+- `toilet_reviews` - 用户评价与评论
+- `health_tests` - 健康检测记录
+
+### 后续规划扩展
+- `user_favorites` - 收藏夹
+- `location_statistics` - 位置热力图数据
+- `user_badges` - 用户等级徽章
+- `content_moderation_logs` - 内容审核日志
+
+---
+
+## 🔐 隐私和安全
+
+✅ **已实现**
+- 密码 BCrypt 加密存储
+- JWT 令牌身份验证
+- 数据库连接 SSL/TLS（生产环境）
+- 敏感词过滤（评论内容）
+
+⏳ **计划中**
+- GDPR 数据导出功能
+- 端到端加密（可选）
+- 隐私数据自动删除政策
+
+---
+
+## 📞 反馈与支持
+
+- **GitHub Issues**: [StarterMonk/Niaoleme/issues](https://github.com/StarterMonk/Niaolemo/issues)
+- **Email**: jimmyhao.dev@gmail.com
+- **GitHub**: [@StarterMonk](https://github.com/StarterMonk)
+
+---
+
+## 📄 许可证
+
+本项目采用 **MIT 许可证**  
+详见 [LICENSE](LICENSE) 文件
+
+---
+
+## 🙏 致谢
+
+感谢所有参与开发、测试和反馈的同学！
+
+**开发者**: jimmyhao  
+**重庆黑客松**: 2026-05
 
 ### 2. 记录尿液
 - 打开"记录"标签页
