@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Modal, TextInput, StyleSheet, SafeAreaView, Alert, RefreshControl } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Modal, TextInput, StyleSheet, SafeAreaView, Alert, RefreshControl, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 import { toiletService } from '../services/toiletService';
 import { authService } from '../services/authService';
@@ -12,9 +12,11 @@ const MapScreen = ({ navigation }) => {
   const [newToiletComment, setNewToiletComment] = useState('');
   const [userLocation, setUserLocation] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const loadToilets = useCallback(async () => {
     try {
+      setLoading(true);
       let { status } = await Location.requestForegroundPermissionsAsync();
       let loc = null;
       if (status === 'granted') {
@@ -27,6 +29,8 @@ const MapScreen = ({ navigation }) => {
       setToilets(data.toilets || []);
     } catch (err) {
       if (__DEV__) console.log('Load toilets error:', err.message);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -98,7 +102,19 @@ const MapScreen = ({ navigation }) => {
       </View>
 
       <Text style={styles.sectionTitle}>厕所评价</Text>
-      <FlatList data={toilets} keyExtractor={item => item.id} contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#1976D2" />
+          <Text style={styles.loadingText}>加载中...</Text>
+        </View>
+      ) : toilets.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyIcon}>🚻</Text>
+          <Text style={styles.emptyTitle}>暂无厕所数据</Text>
+          <Text style={styles.emptyMessage}>点击右上角添加附近的公共厕所</Text>
+        </View>
+      ) : (
+        <FlatList data={toilets} keyExtractor={item => item.id} contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.reviewCard} onPress={() => setSelectedToilet(item)}>
@@ -118,6 +134,7 @@ const MapScreen = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
+      )}
 
       <Modal visible={!!selectedToilet} transparent animationType="slide">
         <View style={styles.modalOverlay}>
@@ -202,6 +219,12 @@ const styles = StyleSheet.create({
   modalBtnText: { color: '#fff', fontWeight: '600', fontSize: 15 },
   input: { borderWidth: 1, borderColor: '#E0E0E0', padding: 12, borderRadius: 10, marginBottom: 12, backgroundColor: '#FAFAFA', fontSize: 14, color: '#333' },
   textArea: { minHeight: 80, textAlignVertical: 'top' },
+  loadingContainer: { alignItems: 'center', justifyContent: 'center', paddingVertical: 40 },
+  loadingText: { marginTop: 10, color: '#9E9E9E', fontSize: 14 },
+  emptyContainer: { alignItems: 'center', justifyContent: 'center', paddingVertical: 40 },
+  emptyIcon: { fontSize: 48, marginBottom: 12 },
+  emptyTitle: { fontSize: 16, fontWeight: '600', color: '#1A1A2E', marginBottom: 6 },
+  emptyMessage: { fontSize: 13, color: '#9E9E9E', textAlign: 'center' },
 });
 
 export default MapScreen;
