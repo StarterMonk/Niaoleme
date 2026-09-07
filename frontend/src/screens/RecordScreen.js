@@ -82,8 +82,8 @@ const RecordScreen = () => {
       setHygieneRating(0);
       setFacilityRating(0);
     } catch (err) {
-      if (__DEV__) console.log('Save record error:', err.message);
-      Alert.alert('保存失败', err.response?.data?.error || '请检查网络连接');
+      const message = err.code ? err.message : '请检查网络连接';
+      Alert.alert('保存失败', message);
     } finally {
       setSaving(false);
     }

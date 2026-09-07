@@ -70,7 +70,8 @@ const MapScreen = ({ navigation }) => {
       setNewToiletComment('');
       loadToilets();
     } catch (err) {
-      Alert.alert('添加失败', err.response?.data?.error || '请检查网络');
+      const message = err.code ? err.message : '请检查网络';
+      Alert.alert('添加失败', message);
     }
   };
 

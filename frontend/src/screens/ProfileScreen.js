@@ -51,7 +51,8 @@ const ProfileScreen = ({ navigation }) => {
       setUsername('');
       loadProfile();
     } catch (err) {
-      Alert.alert('失败', err.response?.data?.error || '操作失败');
+      const message = err.code ? err.message : '操作失败';
+      Alert.alert('失败', message);
     }
   };
 
