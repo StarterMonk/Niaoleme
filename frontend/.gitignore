@@ -1,0 +1,41 @@
+# Node.js & npm/yarn
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn.lock
+package-lock.json
+
+# Expo
+.expo/
+dist/
+web-build/
+
+# Android build folders and sensitive files
+android/build/
+android/app/build/
+android/.gradle/
+android/app/src/main/assets/
+android/local.properties
+*.keystore
+
+# iOS build folders
+ios/build/
+ios/Pods/
+*.xcworkspace/
+
+# IDE & OS specific
+.idea/
+.vscode/
+*.iml
+*.DS_Store
+
+# Log files
+*.log
+
+# Env files
+.env
+.env.local
+
+# Packaged apps
+*.apk
+*.aab

@@ -5,6 +5,8 @@
 ![尿了没](https://img.shields.io/badge/尿了没-PeeHealthy-blue?style=for-the-badge&logo=react&logoColor=white)
 ![React Native](https://img.shields.io/badge/React_Native-0.81-blue?style=for-the-badge&logo=react&logoColor=white)
 ![Expo SDK](https://img.shields.io/badge/Expo_SDK-54-black?style=for-the-badge&logo=expo&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-18-green?style=for-the-badge&logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-7-green?style=for-the-badge&logo=mongodb&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 **一款关注泌尿健康的智能应用,帮你记录、分析、找厕所**
@@ -32,13 +34,6 @@
 - **趋势分析** - 可视化展示排尿频率、饮水量等健康趋势
 - **广告位** - 为成人纸尿裤、女性卫生用品等提供精准广告投放
 
-### 服务人群
-
-- 关注自身健康状况的人群
-- 有尿频、尿急等症状的用户
-- 需要频繁外出的用户(旅行者、上班族)
-- 喜欢小众、有趣的年轻人
-
 ### 技术栈
 
 | 技术 | 说明 |
@@ -49,21 +44,36 @@
 | Expo Location | 定位服务 |
 | Node.js + Express | 后端API服务 |
 | MongoDB | 数据库 |
+| JWT | 用户认证 |
+| Docker | 容器化部署 |
 
 ### 项目结构
 
 ```
-├── frontend/              # React Native 前端
+├── frontend/                  # React Native 前端
 │   ├── src/
-│   │   └── screens/      # 页面组件
-│   ├── assets/            # 静态资源
-│   ├── App.js             # 应用入口
-│   └── package.json       # 依赖配置
-├── README.md              # 项目说明
-└── urine-health-app.apk   # APK安装包
+│   │   ├── screens/          # 页面组件
+│   │   └── services/         # API服务层
+│   ├── assets/                # 静态资源
+│   ├── App.js                 # 应用入口
+│   └── package.json           # 依赖配置
+├── backend/                   # Node.js 后端
+│   ├── src/
+│   │   ├── config/           # 数据库配置
+│   │   ├── models/           # 数据模型
+│   │   ├── routes/           # API路由
+│   │   ├── controllers/      # 控制器
+│   │   └── middleware/       # 中间件
+│   ├── server.js             # 服务入口
+│   ├── Dockerfile            # Docker配置
+│   └── package.json          # 依赖配置
+├── docker-compose.yml         # Docker编排
+└── README.md                  # 项目说明
 ```
 
 ### 快速开始
+
+#### 前端开发
 
 ```bash
 # 1. 克隆项目
@@ -81,6 +91,36 @@ npm start
 # 5. 在 Expo Go 中扫描二维码即可预览
 ```
 
+#### 后端开发
+
+```bash
+# 1. 进入后端目录
+cd backend
+
+# 2. 安装依赖
+npm install
+
+# 3. 配置环境变量
+cp .env.example .env
+# 编辑 .env 文件,配置 MongoDB 连接字符串
+
+# 4. 启动后端服务
+npm run dev
+```
+
+#### Docker 部署
+
+```bash
+# 一键启动所有服务
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
+
+# 停止服务
+docker-compose down
+```
+
 ### 下载APK
 
 点击下方按钮直接下载APK安装包:
@@ -89,8 +129,8 @@ npm start
 
 ### 开发计划
 
-- [ ] 用户注册/登录系统
-- [ ] 真实数据持久化
+- [x] 用户注册/登录系统
+- [x] 真实数据持久化
 - [ ] 高德地图集成
 - [ ] AI大模型健康分析
 - [ ] 社区功能
@@ -124,13 +164,6 @@ Whether you want to track urination habits, analyze health conditions, or find a
 - **Trend Analysis** - Visual display of urination frequency, water intake, and other health trends
 - **Ad Placement** - Targeted advertising for adult diapers, feminine hygiene products, etc.
 
-### Target Audience
-
-- People who care about their own health status
-- Users with symptoms like frequent urination, urgency
-- Users who need to go out frequently (travelers, office workers)
-- Young people who like niche and fun apps
-
 ### Tech Stack
 
 | Technology | Description |
@@ -141,8 +174,12 @@ Whether you want to track urination habits, analyze health conditions, or find a
 | Expo Location | Location services |
 | Node.js + Express | Backend API service |
 | MongoDB | Database |
+| JWT | User authentication |
+| Docker | Containerized deployment |
 
 ### Quick Start
+
+#### Frontend Development
 
 ```bash
 # 1. Clone the project
@@ -160,6 +197,36 @@ npm start
 # 5. Scan the QR code in Expo Go to preview
 ```
 
+#### Backend Development
+
+```bash
+# 1. Enter backend directory
+cd backend
+
+# 2. Install dependencies
+npm install
+
+# 3. Configure environment variables
+cp .env.example .env
+# Edit .env file, configure MongoDB connection string
+
+# 4. Start backend server
+npm run dev
+```
+
+#### Docker Deployment
+
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
 ### Download APK
 
 Click the button below to download the APK:
@@ -168,8 +235,8 @@ Click the button below to download the APK:
 
 ### Roadmap
 
-- [ ] User registration/login system
-- [ ] Real data persistence
+- [x] User registration/login system
+- [x] Real data persistence
 - [ ] Amap (高德地图) integration
 - [ ] AI model health analysis
 - [ ] Community features
