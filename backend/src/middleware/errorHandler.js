@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 class AppError extends Error {
   constructor(message, status = 500, code = 'INTERNAL_ERROR') {
     super(message);

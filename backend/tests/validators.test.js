@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 describe('Validators', () => {
   describe('Email validation', () => {
     it('should validate correct email format', () => {
@@ -53,8 +51,10 @@ describe('Validators', () => {
     });
 
     it('should reject invalid ratings', () => {
-      expect(6 >= 0 && 6 <= 5).toBe(false);
-      expect(-1 >= 0 && -1 <= 5).toBe(false);
+      const invalidHigh = 6;
+      const invalidLow = -1;
+      expect(invalidHigh >= 0 && invalidHigh <= 5).toBe(false);
+      expect(invalidLow >= 0 && invalidLow <= 5).toBe(false);
     });
   });
 });
