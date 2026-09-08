@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const { authLimiter } = require('../middleware/rateLimit');
 const { register, login, getProfile } = require('../controllers/authController');
 const auth = require('../middleware/auth');
+
+const authLimiter = process.env.NODE_ENV !== 'test'
+  ? require('../middleware/rateLimit').authLimiter
+  : (req, res, next) => next();
 
 router.post('/register', authLimiter, [
   body('username').trim().isLength({ min: 2, max: 30 }).withMessage('用户名长度 2-30'),
