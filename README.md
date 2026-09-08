@@ -7,6 +7,8 @@
 ![Expo SDK](https://img.shields.io/badge/Expo_SDK-54-black?style=for-the-badge&logo=expo&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-18-green?style=for-the-badge&logo=node.js&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-7-green?style=for-the-badge&logo=mongodb&logoColor=white)
+![CI](https://img.shields.io/badge/CI-passing-brightgreen?style=for-the-badge&logo=github-actions&logoColor=white)
+![Tests](https://img.shields.io/badge/Tests-24%20passed-brightgreen?style=for-the-badge&logo=jest&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 **一款关注泌尿健康的智能应用,帮你记录、分析、找厕所**
@@ -43,8 +45,12 @@
 | React Navigation | 页面导航 |
 | Expo Location | 定位服务 |
 | Node.js + Express | 后端API服务 |
-| MongoDB | 数据库 |
+| MongoDB + Mongoose | 数据库 + ODM |
 | JWT | 用户认证 |
+| Helmet + Rate Limit | 安全防护 |
+| Jest + Supertest | 测试框架 |
+| ESLint | 代码规范 |
+| GitHub Actions | CI/CD |
 | Docker | 容器化部署 |
 
 ### 项目结构
@@ -53,22 +59,27 @@
 ├── frontend/                  # React Native 前端
 │   ├── src/
 │   │   ├── screens/          # 页面组件
-│   │   └── services/         # API服务层
-│   ├── assets/                # 静态资源
-│   ├── App.js                 # 应用入口
-│   └── package.json           # 依赖配置
+│   │   ├── components/       # 通用组件 (ErrorBoundary, LoadingStates)
+│   │   ├── services/         # API服务层 (api, auth, record, toilet)
+│   │   ├── constants/        # 主题常量
+│   │   └── utils/            # 工具函数 (logger, validators)
+│   ├── assets/               # 静态资源
+│   ├── App.js                # 应用入口 (ErrorBoundary + GestureHandler)
+│   └── package.json          # 依赖配置
 ├── backend/                   # Node.js 后端
 │   ├── src/
-│   │   ├── config/           # 数据库配置
-│   │   ├── models/           # 数据模型
-│   │   ├── routes/           # API路由
+│   │   ├── config/           # 配置 (db, env)
+│   │   ├── models/           # 数据模型 (User, UrineRecord, Toilet)
+│   │   ├── routes/           # API路由 (auth, records, toilets)
 │   │   ├── controllers/      # 控制器
-│   │   └── middleware/       # 中间件
+│   │   └── middleware/       # 中间件 (auth, errorHandler, rateLimit)
+│   ├── tests/                # 测试套件 (24 tests)
 │   ├── server.js             # 服务入口
-│   ├── Dockerfile            # Docker配置
+│   ├── Dockerfile            # Docker配置 (non-root + healthcheck)
 │   └── package.json          # 依赖配置
-├── docker-compose.yml         # Docker编排
-└── README.md                  # 项目说明
+├── .github/workflows/        # GitHub Actions CI
+├── docker-compose.yml        # Docker编排
+└── README.md                 # 项目说明
 ```
 
 ### 快速开始
@@ -102,10 +113,16 @@ npm install
 
 # 3. 配置环境变量
 cp .env.example .env
-# 编辑 .env 文件,配置 MongoDB 连接字符串
+# 编辑 .env 文件,配置 MongoDB 连接字符串和 JWT_SECRET
 
 # 4. 启动后端服务
 npm run dev
+
+# 5. 运行测试
+npm test
+
+# 6. 代码检查
+npm run lint
 ```
 
 #### Docker 部署
@@ -121,6 +138,23 @@ docker-compose logs -f
 docker-compose down
 ```
 
+### API 接口
+
+| 方法 | 路径 | 说明 | 认证 |
+|------|------|------|------|
+| POST | /api/v1/auth/register | 用户注册 | 否 |
+| POST | /api/v1/auth/login | 用户登录 | 否 |
+| GET | /api/v1/auth/profile | 获取用户信息 | 是 |
+| POST | /api/v1/records | 创建嘘嘘记录 | 是 |
+| GET | /api/v1/records | 获取记录列表 | 是 |
+| GET | /api/v1/records/stats | 获取统计数据 | 是 |
+| DELETE | /api/v1/records/:id | 删除记录 | 是 |
+| GET | /api/v1/toilets | 获取附近厕所 | 否 |
+| GET | /api/v1/toilets/:id | 获取厕所详情 | 否 |
+| POST | /api/v1/toilets | 添加厕所 | 是 |
+| POST | /api/v1/toilets/:id/rate | 评价厕所 | 是 |
+| GET | /api/v1/health | 健康检查 | 否 |
+
 ### 下载APK
 
 点击下方按钮直接下载APK安装包:
@@ -131,6 +165,9 @@ docker-compose down
 
 - [x] 用户注册/登录系统
 - [x] 真实数据持久化
+- [x] 安全加固 (Helmet, Rate Limit, Input Validation)
+- [x] 测试套件 (24 tests)
+- [x] CI/CD (GitHub Actions)
 - [ ] 高德地图集成
 - [ ] AI大模型健康分析
 - [ ] 社区功能
@@ -173,8 +210,12 @@ Whether you want to track urination habits, analyze health conditions, or find a
 | React Navigation | Page navigation |
 | Expo Location | Location services |
 | Node.js + Express | Backend API service |
-| MongoDB | Database |
+| MongoDB + Mongoose | Database + ODM |
 | JWT | User authentication |
+| Helmet + Rate Limit | Security |
+| Jest + Supertest | Testing framework |
+| ESLint | Code linting |
+| GitHub Actions | CI/CD |
 | Docker | Containerized deployment |
 
 ### Quick Start
@@ -208,10 +249,16 @@ npm install
 
 # 3. Configure environment variables
 cp .env.example .env
-# Edit .env file, configure MongoDB connection string
+# Edit .env file, configure MongoDB connection and JWT_SECRET
 
 # 4. Start backend server
 npm run dev
+
+# 5. Run tests
+npm test
+
+# 6. Lint code
+npm run lint
 ```
 
 #### Docker Deployment
@@ -227,6 +274,23 @@ docker-compose logs -f
 docker-compose down
 ```
 
+### API Endpoints
+
+| Method | Path | Description | Auth |
+|--------|------|-------------|------|
+| POST | /api/v1/auth/register | Register user | No |
+| POST | /api/v1/auth/login | Login user | No |
+| GET | /api/v1/auth/profile | Get user profile | Yes |
+| POST | /api/v1/records | Create record | Yes |
+| GET | /api/v1/records | List records | Yes |
+| GET | /api/v1/records/stats | Get statistics | Yes |
+| DELETE | /api/v1/records/:id | Delete record | Yes |
+| GET | /api/v1/toilets | Get nearby toilets | No |
+| GET | /api/v1/toilets/:id | Get toilet details | No |
+| POST | /api/v1/toilets | Add toilet | Yes |
+| POST | /api/v1/toilets/:id/rate | Rate toilet | Yes |
+| GET | /api/v1/health | Health check | No |
+
 ### Download APK
 
 Click the button below to download the APK:
@@ -237,6 +301,9 @@ Click the button below to download the APK:
 
 - [x] User registration/login system
 - [x] Real data persistence
+- [x] Security hardening (Helmet, Rate Limit, Input Validation)
+- [x] Test suite (24 tests)
+- [x] CI/CD (GitHub Actions)
 - [ ] Amap (高德地图) integration
 - [ ] AI model health analysis
 - [ ] Community features
